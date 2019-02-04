@@ -16,9 +16,19 @@ helper = Helper()
 def threedot1a():
 
     A = 0.5;
-    #F = 500;
+    # A = -0.5;
+    F = 1000;
     Phi = 0; Fs = 16000; sTime = 0; eTime = 0.4;
     Freq = np.arange(2000, 34000, 2000)
+    # n = np.arange(-10, 11)
+    # yd = np.zeros(len(n), dtype=np.float)
+    # yd = -0.5*np.sin(0.125*np.pi*n)
+    # print yd
+    # fig, axs = plt.subplots(1,1)
+    # axs.stem(n, yd)
+    # axs.grid()
+    # plt.show()
+    #sinusoid = helper.fnGenSampledSinusoid(A, F, Phi, Fs, sTime, eTime)
 
     for F in Freq:
         sinusoid = helper.fnGenSampledSinusoid(A, F, Phi, Fs, sTime, eTime)
@@ -26,8 +36,9 @@ def threedot1a():
         wavfile.write('t1_16bit.wav', Fs, y_16bit)
         print ("Current Freq: ", F, "Hz")
         print ("")
-        winsound.PlaySound('t1_16bit.wav', winsound.SND_FILENAME)
-        time.sleep(1)
+        if F == 14000 or F == 30000:
+            winsound.PlaySound('t1_16bit.wav', winsound.SND_FILENAME)
+            time.sleep(1)
 
 
 #=======================================#3.1a===================================
@@ -96,7 +107,7 @@ def threedot4():
 
     numSamples = 36
     A=0.95;
-    w1=(2*np.pi)/18;
+    w1=(2*np.pi)/72;
     #w1=0.1*np.pi;
     n = np.arange(0, numSamples, 1)
     y1 = np.multiply(np.power(A, n), np.exp(1j * w1 * n))
@@ -147,12 +158,19 @@ def threedot5():
         w1=(2*np.pi*k)/16;
         n = np.arange(0, numSamples, 1)
         y1 = np.exp(1j * w1 * n)
-        axs[k].plot(n, y1[0:numSamples].real,'r--o')
-        axs[k].plot(n, y1[0:numSamples].imag,'g--o')
-        axs[k].set_xlabel('sample index n')
-        axs[k].set_ylabel('y[n]')
-        axs[k].set_title('(red=real) (green=imag) k = ' + str(k)  )
-        axs[k].grid()
+        # axs[k].plot(n, y1[0:numSamples].real,'r--o')
+        # axs[k].plot(n, y1[0:numSamples].imag,'g--o')
+        # axs[k].set_xlabel('sample index n')
+        # axs[k].set_ylabel('y[n]')
+        # axs[k].set_title('(red=real) (green=imag) k = ' + str(k)  )
+        # axs[k].grid()
+        plt.figure(2)
+        if k == 1:
+            for x in y1:
+                plt.polar([0,np.angle(x)],[0,np.abs(x)],marker='o')
+                print "Angle:", np.angle(x)
+                print "Angle:", (np.angle(x)/(2*np.pi))*360
+                #print "Angle:", np.angle(x)/np.angle(y1[1]), "Amp:", np.abs(x)
 
     plt.show()
 
@@ -163,11 +181,10 @@ def threedot5():
 
 #===============================================================================
 
-def test():
 
 
 #threedot1a()
 #threedot1b()
-#threedot2(seq="98285937", durTone = 0.3)
-threedot4()
-#threedot5()
+#threedot2(seq="3", fs=8000, durTone = 0.2)
+#threedot4()
+threedot5()
